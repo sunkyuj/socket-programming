@@ -89,14 +89,23 @@ int main(int argc, char *argv[])
 	printf("Transferring...\n");
 
 	// [fopen 함수] 전송할 파일 열기
-	fp = fopen("./linuxSampleVideo.mp4", "rb"); // 옵션: read binary
-
-	// 본격적으로 파일 전송!
-	while (read_size = fread((void *)buffer, sizeof(char), BUFFER_SIZE, fp))
+	// fp = fopen("./linuxSampleVideo.mp4", "rb"); // 옵션: read binary
+	system("split --number=10 --numeric-suffixes=0 -a 1 linuxSampleVideo.mp4 smallfile_");
+	for (int i = 0; i < 10; i++)
 	{
-		write(clnt_sock, buffer, read_size);
-		byte_size += read_size;
+		char filename[14] = "./smallfile_";
+		filename[12] = i + '0';
+		filename[13] = '\0';
+		printf("%s\n", filename);
+		fp = fopen(filename, "rb");
+		while (read_size = fread((void *)buffer, sizeof(char), BUFFER_SIZE, fp))
+		{
+			write(clnt_sock, buffer, read_size);
+			byte_size += read_size;
+		}
 	}
+	fclose(fp);
+	// 본격적으로 파일 전송!
 
 	// 전송 바이트 수 출력
 	printf("Complete Transferring, total %d (bytes)\n", byte_size);
@@ -105,7 +114,6 @@ int main(int argc, char *argv[])
 	shutdown(clnt_sock, SHUT_WR);
 
 	// [fclose 함수] 파일 닫기
-	fclose(fp);
 
 	// [close 함수] 소켓을 해제함
 	close(clnt_sock);

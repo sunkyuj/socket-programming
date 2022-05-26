@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 	printf("Downloading...\n");
 
 	// [fopen 함수] 전송받고 저장할 파일 열기
-	fp = fopen("./recieved_video.mp4", "wb"); // 옵션: write binary
+	fp = fopen("./received_video.mp4", "wb"); // 옵션: write binary
 
 	// 시간 측정 시작
 	start = clock();
@@ -95,7 +95,8 @@ int main(int argc, char *argv[])
 
 	// [close 함수] 소켓 해제
 	close(sock);
-	// 파일 같은지 확인\vscode-scm
+	// system("ls smallfile_* | sort | xargs cat > received_video.mp4");
+	//  파일 같은지 확인\vscode-scm
 	printf("checking if the two files are the same...\n");
 	if (system("cmp -s linuxSampleVideo.mp4 recieved_video.mp4"))
 		printf("the two files are different\n");
