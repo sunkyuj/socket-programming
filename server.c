@@ -3,13 +3,13 @@ cd /mnt/c/Users/sunky/socket-programming
 gcc server.c -o server
 ./server 8000
 */
+
 #include <stdio.h>
 #include <stdlib.h>		// atoi 함수 사용
 #include <string.h>		// memset 함수 사용
 #include <unistd.h>		// sockaddr_in, read, write 등 사용
 #include <arpa/inet.h>	// htnol, htons, INADDR_ANY, sockaddr_in 등 사용
 #include <sys/socket.h> // 소켓 라이브러리
-//#include <WinSock2.h>
 
 #define BUFFER_SIZE 2048 // 버퍼 크기 설정
 
@@ -57,7 +57,8 @@ int main(int argc, char *argv[])
 	memset(&serv_addr, 0, sizeof(serv_addr));	   // serv_addr 크기만큼 0으로 초기화
 	serv_addr.sin_family = AF_INET;				   // 주소 체계
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY); // IPv4 주소 저장
-	serv_addr.sin_port = htons(atoi(argv[1]));	   // Port 저장
+	// serv_addr.sin_port = htons(8000);			   // Port 저장
+	serv_addr.sin_port = htons(atoi(argv[1])); // Port 저장
 
 	// [bind 함수] 소켓과 서버 주소를 바인딩, -1(에러) 이나 0(성공) 반환
 	if (bind(serv_sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == -1)
@@ -88,7 +89,7 @@ int main(int argc, char *argv[])
 	printf("Transferring...\n");
 
 	// [fopen 함수] 전송할 파일 열기
-	fp = fopen("./video.avi", "rb"); // 옵션: read binary
+	fp = fopen("./linuxSampleVideo.mp4", "rb"); // 옵션: read binary
 
 	// 본격적으로 파일 전송!
 	while (read_size = fread((void *)buffer, sizeof(char), BUFFER_SIZE, fp))

@@ -2,8 +2,9 @@
 cd /mnt/c/Users/sunky/socket-programming
 gcc client.c -o client
 ./client 127.0.0.1 8000
+./client 192.168.0.1 8000
 ./client 208.67.222.222 8000
-
+172.26.158.153 <-- 리눅스 ip
 */
 
 #include <stdio.h>
@@ -13,7 +14,6 @@ gcc client.c -o client
 #include <arpa/inet.h> // htnol, htons, INADDR_ANY, sockaddr_in 등
 #include <sys/socket.h>
 #include <time.h> // 시간 측정을 위한 라이브러리
-//#include <WinSock2.h>
 
 #define BUFFER_SIZE 2048 // 버퍼 크기 설정
 
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 	printf("Downloading...\n");
 
 	// [fopen 함수] 전송받고 저장할 파일 열기
-	fp = fopen("./recieved_video.avi", "wb"); // 옵션: write binary
+	fp = fopen("./recieved_video.mp4", "wb"); // 옵션: write binary
 
 	// 시간 측정 시작
 	start = clock();
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 	close(sock);
 	// 파일 같은지 확인\vscode-scm
 	printf("checking if the two files are the same...\n");
-	if (system("cmp -s video.avi recieved_video.avi"))
+	if (system("cmp -s linuxSampleVideo.mp4 recieved_video.mp4"))
 		printf("the two files are different\n");
 	else
 		printf("the two files are the same\n");
